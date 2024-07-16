@@ -1,5 +1,5 @@
 package br.com.victorgadelha.forumhub.DTO;
 
-public record UsuarioDTO(Long id, String email, String senha) {
+public record UsuarioDTO(Long id, String login, String senha) {
 
 }

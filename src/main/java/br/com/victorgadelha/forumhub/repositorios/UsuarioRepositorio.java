@@ -8,7 +8,5 @@ import br.com.victorgadelha.forumhub.modelos.Usuario;
 
 @Repository
 public interface UsuarioRepositorio extends JpaRepository<Usuario, Long> {
-
     UserDetails findByLogin(String login);
-
 }
