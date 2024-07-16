@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -40,5 +38,13 @@ public class Usuario {
     @NotBlank(message = "A senha é obrigatória.")
     @Column(unique = true)
     private String senha;
+
+    @Column(name = "data_criacao")
+    private LocalDateTime dataCriacao;
+
+    @PrePersist
+    private void beforePersist() {
+        this.dataCriacao = LocalDateTime.now();
+    }
 
 }
