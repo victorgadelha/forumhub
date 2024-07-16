@@ -1,6 +1,7 @@
 package br.com.victorgadelha.forumhub.servicos;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,10 @@ public class TopicoServico {
 
     public List<Topico> listarTopicos() {
         return topicoRepositorio.findAll();
+    }
+
+    public Optional<Topico> acharTopicoPorID(Long id) {
+        return topicoRepositorio.findById(id);
     }
 
 }
