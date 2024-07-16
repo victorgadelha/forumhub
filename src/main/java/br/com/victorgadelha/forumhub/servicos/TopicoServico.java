@@ -39,10 +39,10 @@ public class TopicoServico {
 
     @Transactional
     public Topico atualizarTopico(Long id, TopicoDTO topicoDTO) {
-        Optional<Topico> optionalTopico = topicoRepositorio.findById(id);
+        Optional<Topico> topico = topicoRepositorio.findById(id);
 
-        if (optionalTopico.isPresent()) {
-            Topico topicoExistente = optionalTopico.get();
+        if (topico.isPresent()) {
+            Topico topicoExistente = topico.get();
             topicoExistente.setTitulo(topicoDTO.titulo());
             topicoExistente.setMensagem(topicoDTO.mensagem());
             topicoExistente.setAutor(topicoDTO.autor());
@@ -51,6 +51,19 @@ public class TopicoServico {
             return topicoRepositorio.save(topicoExistente);
         } else {
             throw new RuntimeException("Tópico não encontrado com o ID: " + id);
+        }
+    }
+
+    @Transactional
+    public boolean deletarTopico(Long id) {
+        Optional<Topico> optionalTopico = topicoRepositorio.findById(id);
+
+        if (optionalTopico.isPresent()) {
+            topicoRepositorio.deleteById(id);
+            return true;
+        } else {
+            // throw new RuntimeException("Tópico não encontrado.");
+            return false;
         }
     }
 
