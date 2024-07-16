@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 //import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,15 +41,26 @@ public class TopicoControlador {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Topico> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<?> buscarPorId(@PathVariable Long id) {
+        Optional<Topico> topico = topicoServico.acharTopicoPorID(id);
 
+        if (topico.isPresent()) {
+            return ResponseEntity.ok(topico.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Tópico não encontrado");
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Topico> atualizarTopico(@PathVariable Long id, @Valid @RequestBody TopicoDTO topicoDTO) {
         Optional<Topico> optionalTopico = topicoServico.acharTopicoPorID(id);
 
         if (optionalTopico.isPresent()) {
-            return ResponseEntity.ok(optionalTopico.get());
+            Topico topicoAtualizado = topicoServico.atualizarTopico(id, topicoDTO);
+
+            return ResponseEntity.ok(topicoAtualizado);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

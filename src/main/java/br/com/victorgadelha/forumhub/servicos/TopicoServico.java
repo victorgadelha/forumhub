@@ -21,7 +21,6 @@ public class TopicoServico {
     public Topico salvarTopico(TopicoDTO topicoDTO) {
         Topico topico = new Topico();
 
-        // topico.setId(topicoDTO.id());
         topico.setTitulo(topicoDTO.titulo());
         topico.setMensagem(topicoDTO.mensagem());
         topico.setAutor(topicoDTO.autor());
@@ -36,6 +35,23 @@ public class TopicoServico {
 
     public Optional<Topico> acharTopicoPorID(Long id) {
         return topicoRepositorio.findById(id);
+    }
+
+    @Transactional
+    public Topico atualizarTopico(Long id, TopicoDTO topicoDTO) {
+        Optional<Topico> optionalTopico = topicoRepositorio.findById(id);
+
+        if (optionalTopico.isPresent()) {
+            Topico topicoExistente = optionalTopico.get();
+            topicoExistente.setTitulo(topicoDTO.titulo());
+            topicoExistente.setMensagem(topicoDTO.mensagem());
+            topicoExistente.setAutor(topicoDTO.autor());
+            topicoExistente.setCurso(topicoDTO.curso());
+
+            return topicoRepositorio.save(topicoExistente);
+        } else {
+            throw new RuntimeException("Tópico não encontrado com o ID: " + id);
+        }
     }
 
 }
